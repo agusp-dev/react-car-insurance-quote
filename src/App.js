@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Header, Form, Summary, TotalCost } from './components'
+import { Spinner } from './components/spinner/Spinner'
 import styled from '@emotion/styled'
 
 const Container = styled.div`
@@ -15,6 +16,7 @@ const FormContainer = styled.div`
 function App() {
 
 	const [summary, setSummary] = useState({})
+	const [loading, setLoading] = useState(false)
 
 	const { brand, year, plan, totalCost } = summary
 
@@ -22,7 +24,12 @@ function App() {
 		<Container>
 			<Header title='Car Insurance Quote' />
 			<FormContainer>
-				<Form setSummary={ setSummary }/>
+				<Form 
+					setSummary={ setSummary }
+					setLoading={ setLoading }/>
+				{loading && (
+					<Spinner />
+				)}
 				{brand && year && plan && totalCost && (
 					<div>
 <						Summary 

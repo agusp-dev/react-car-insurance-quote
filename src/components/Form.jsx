@@ -51,7 +51,7 @@ const Error = styled.div`
 	margin-bottom: 2rem;
 `
 
-const Form = ({ setSummary }) => {
+const Form = ({ setSummary, setLoading }) => {
 
 	const [selection, setSelection] = useState({
 		brand: '',
@@ -65,16 +65,25 @@ const Form = ({ setSummary }) => {
 	const handleQuote = e => {
 		e.preventDefault()
 
+		setSummary({})
+
 		if (brand.trim() === '' || 
 			year.trim() === '' || 
 			plan.trim() === '') return showError(true)
 
 		showError(false)
 		const totalCost = getTotalCost(brand, year, plan )
-		setSummary({
-			totalCost,
-			...selection
-		})
+
+		//start loading spinner
+		setLoading(true)
+
+		setTimeout(() => {
+			setSummary({
+				totalCost,
+				...selection
+			})
+			setLoading(false)
+		}, 3000)
 	}
 
 	const handleFieldChange = e => {
@@ -146,7 +155,8 @@ const Form = ({ setSummary }) => {
 }
 
 Form.propTypes = {
-	setTotalCost: PropTypes.func.isRequired
+	setSummary: PropTypes.func.isRequired,
+	setLoading: PropTypes.func.isRequired
 }
 
 export { Form }

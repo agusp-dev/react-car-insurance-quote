@@ -4,15 +4,23 @@ import styled from '@emotion/styled'
 
 const CostText = styled.p`
 	color: #00838F;
-	padding: 1rem;
-	margin: 1rem;
 	text-align: center;
 	font-weight: bold;
 `
 
+const CostContainer = styled.div`
+	padding: .5rem;
+	border: 1px solid #26C6DA;
+	margin-top: 1rem;
+	position: relative;
+	background-color: rgb(127, 224, 237);
+`
+
 const TotalCost = ({ totalCost }) => {
 	return (
-		<CostText>Total Cost: ${ totalCost }</CostText>
+		<CostContainer>
+			<CostText>Total Cost: ${ totalCost }</CostText>
+		</CostContainer>
 	)
 }
 
