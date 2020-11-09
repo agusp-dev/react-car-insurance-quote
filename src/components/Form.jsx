@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
+import { getTotalCost } from '../helpers/cost'
+import PropTypes from 'prop-types'
 
 const Field = styled.div`
 	display: flex;
@@ -40,26 +42,39 @@ const Button = styled.button`
 	}
 `
 
-const Form = () => {
+const Error = styled.div`
+	background-color: red;
+	color: white;
+	padding: 1rem;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 2rem;
+`
+
+const Form = ({ setSummary }) => {
 
 	const [selection, setSelection] = useState({
 		brand: '',
 		year: '',
 		plan: 'basic'
 	})
+	const [error, showError] = useState(false)
 
 	const { brand, year, plan } = selection
 
 	const handleQuote = e => {
 		e.preventDefault()
 
-		if (brand.trim() === '' || year.trim() === '') {
-			//error
-			return
-		}
+		if (brand.trim() === '' || 
+			year.trim() === '' || 
+			plan.trim() === '') return showError(true)
 
-		//continue
-
+		showError(false)
+		const totalCost = getTotalCost(brand, year, plan )
+		setSummary({
+			totalCost,
+			...selection
+		})
 	}
 
 	const handleFieldChange = e => {
@@ -71,6 +86,11 @@ const Form = () => {
 
 	return (
 		<form onSubmit={ handleQuote }>
+			{error && (
+				<Error>
+					Please, complete all the fields!
+				</Error>
+			)}
 			<Field>
 				<Label>Brand:</Label>
 				<Select
@@ -123,6 +143,10 @@ const Form = () => {
 			</Button>
 		</form>
 	)
+}
+
+Form.propTypes = {
+	setTotalCost: PropTypes.func.isRequired
 }
 
 export { Form }

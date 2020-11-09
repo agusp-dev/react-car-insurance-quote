@@ -1,4 +1,5 @@
-import { Header, Form } from './components'
+import React, { useState } from 'react'
+import { Header, Form, Summary, TotalCost } from './components'
 import styled from '@emotion/styled'
 
 const Container = styled.div`
@@ -12,11 +13,26 @@ const FormContainer = styled.div`
 `
 
 function App() {
+
+	const [summary, setSummary] = useState({})
+
+	const { brand, year, plan, totalCost } = summary
+
   return (
 		<Container>
 			<Header title='Car Insurance Quote' />
 			<FormContainer>
-				<Form />
+				<Form setSummary={ setSummary }/>
+				{brand && year && plan && totalCost && (
+					<div>
+<						Summary 
+							brand={ brand }
+							year={ year }
+							plan={ plan }/>
+						<TotalCost 
+							totalCost={ totalCost }/>
+					</div>
+				)}
 			</FormContainer>
 		</Container>
   )
